@@ -23,9 +23,8 @@ namespace movies.Entities
         
         [Required]
         public DateTimeOffset ReleaseDate { get; set; }
-        
         public ICollection<Genre> Genres { get; set; }
-
         public ICollection<Actor> Actors { get; set; }
+        public byte[] Image { get; set; }
     }
 }

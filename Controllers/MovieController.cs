@@ -1,8 +1,7 @@
 using System;
 using System.Linq;
-using System.Text.Json;
-using System.Text.Json.Serialization;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
 using movies.Mappers;
 using movies.Models;
@@ -30,7 +29,7 @@ namespace movies.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> PostAsync(NewMovie movie)
+        public async Task<IActionResult> PostAsync([FromForm] NewMovie movie)
         {
             if(movie.ActorIds.Count() < 1 || movie.GenreIds.Count() < 1)
             {
@@ -79,14 +78,15 @@ namespace movies.Controllers
         {
             if(await _ms.ExistsAsync(id))
             {
+                var movie = await _ms.GetAsync(id);
                 var json = JsonConvert.SerializeObject(
-                    await _ms.GetAsync(id), Formatting.Indented,
+                    movie, Formatting.Indented,
                     new JsonSerializerSettings
                     {
                         ReferenceLoopHandling = ReferenceLoopHandling.Ignore
                     }
                 );
-                return Ok(json);
+                return File(movie.Image, "image/jpg");
             }
 
             return NotFound();

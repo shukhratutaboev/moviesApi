@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using Microsoft.AspNetCore.Http;
 
 namespace movies.Models
 {
@@ -19,6 +20,10 @@ namespace movies.Models
         
         [Required]
         public DateTimeOffset ReleaseDate { get; set; }
+
+        [Required]
+        [Display(Name="File")]
+        public IFormFile Image { get; set; }
         
         [Required]
         public IEnumerable<Guid> GenreIds { get; set; }

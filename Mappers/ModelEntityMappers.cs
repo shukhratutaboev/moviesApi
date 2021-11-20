@@ -1,6 +1,8 @@
+using System.IO;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using Microsoft.AspNetCore.Http;
 using movies.Models;
 
 namespace movies.Mappers
@@ -15,7 +17,8 @@ namespace movies.Mappers
             {
                 Id = Guid.NewGuid(),
                 Fullname = actor.Fullname,
-                Birthdate = actor.Birthdate
+                Birthdate = actor.Birthdate,
+                Image = toByte(actor.Image)
             };
 
         public static Entities.Movie ToEntity(this Models.NewMovie movie, 
@@ -29,7 +32,15 @@ namespace movies.Mappers
                     ReleaseDate = movie.ReleaseDate,
                     Rating = movie.Rating,
                     Actors = actors.ToList(),
-                    Genres = genres.ToList()
+                    Genres = genres.ToList(),
+                    Image = toByte(movie.Image)
                 };
+        private static byte[] toByte(IFormFile image)
+        {
+            var memoryStream = new MemoryStream();
+            image.CopyToAsync(memoryStream);
+            var result = memoryStream.ToArray();
+            return result;
+        }
     }
 }

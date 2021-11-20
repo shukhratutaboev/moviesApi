@@ -20,5 +20,6 @@ namespace movies.Entities
         
         [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
         public ICollection<Movie> Movies { get; set; }
+        public byte[] Image { get; set; }
     }
 }

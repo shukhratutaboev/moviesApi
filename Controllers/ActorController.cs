@@ -20,7 +20,7 @@ namespace movies.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> PostAsync(NewActor actor)
+        public async Task<IActionResult> PostAsync([FromForm] NewActor actor)
         {
             var result = await _as.CreateAsync(actor.ToEntity());
 
@@ -51,14 +51,15 @@ namespace movies.Controllers
         {
             if(await _as.ExistsAsync(id))
             {
+                var actor = await _as.GetAsync(id);
                 var json = JsonConvert.SerializeObject(
-                    await _as.GetAsync(id), Formatting.Indented,
+                    actor, Formatting.Indented,
                     new JsonSerializerSettings
                     {
                         ReferenceLoopHandling = ReferenceLoopHandling.Ignore
                     }
                 );
-                return Ok(json);
+                return File(actor.Image, "image/png");
             }
 
             return NotFound();
