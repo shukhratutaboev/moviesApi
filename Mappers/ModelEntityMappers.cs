@@ -35,6 +35,16 @@ namespace movies.Mappers
                     Genres = genres.ToList(),
                     Image = toByte(movie.Image)
                 };
+        public static Entities.Actor ToEntity(this Models.UpdatedActor updatedActor)
+            => new Entities.Actor()
+            {
+                Image = toByte(updatedActor.Image)
+            };
+        public static Entities.Movie ToEntity(this Models.UpdatedMovie updatedMovie)
+            => new Entities.Movie()
+            {
+                Image = toByte(updatedMovie.Image)
+            };
         private static byte[] toByte(IFormFile image)
         {
             var memoryStream = new MemoryStream();

@@ -65,6 +65,16 @@ namespace movies.Controllers
             return NotFound();
         }
 
+        [HttpPut]
+        [Route("{id}")]
+        public async Task<IActionResult> UpdateActorAsync([FromRoute]Guid id, [FromForm]UpdatedActor updatedActor)
+        {
+            var actor = updatedActor.ToEntity();
+            var updateResult = await _as.UpdateActorAsync(id, actor);
+            if(updateResult.IsSuccess) return Ok();
+            return BadRequest(updateResult.exception.Message);
+        }
+
         [HttpDelete]
         public async Task<IActionResult> DeleteAsync(Guid id)
             => Ok(await _as.DeleteAsync(id));

@@ -31,6 +31,21 @@ namespace movies.Services
                 return (false, e, null);
             }
         }
+        public async Task<(bool IsSuccess, Exception exception)> UpdateActorAsync(Guid id, Actor updatedActor)
+        {
+            try
+            {
+                var actor = await GetAsync(id);
+                actor.Image = updatedActor.Image;
+                _ctx.Actors.Update(actor);
+                await _ctx.SaveChangesAsync();
+                return (true, null);
+            }
+            catch(Exception e)
+            {
+                return (false, e);
+            }
+        }
 
         public async Task<(bool IsSuccess, Exception Exception)> DeleteAsync(Guid id)
         {

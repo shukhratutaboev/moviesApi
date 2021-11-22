@@ -59,6 +59,16 @@ namespace movies.Controllers
             return BadRequest(result.Exception.Message);
         }
 
+        [HttpPut]
+        [Route("{id}")]
+        public async Task<IActionResult> UpdateMovieAsync([FromRoute]Guid id, [FromForm]UpdatedMovie updatedMovie)
+        {
+            var movie = updatedMovie.ToEntity();
+            var updateResult = await _ms.UpdateMovieAsync(id, movie);
+            if(updateResult.IsSuccess) return Ok();
+            return BadRequest(updateResult.exception.Message);
+        }
+
         [HttpGet]
         public async Task<IActionResult> GetAsync()
         {

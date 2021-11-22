@@ -53,6 +53,21 @@ namespace movies.Services
                 return (false, e);
             }
         }
+        public async Task<(bool IsSuccess, Exception exception)> UpdateMovieAsync(Guid id, Movie updatedMovie)
+        {
+            try
+            {
+                var movie = await GetAsync(id);
+                movie.Image = updatedMovie.Image;
+                _ctx.Movies.Update(movie);
+                await _ctx.SaveChangesAsync();
+                return (true, null);
+            }
+            catch(Exception e)
+            {
+                return (false, e);
+            }
+        }
 
         public Task<bool> ExistsAsync(Guid id)
             => _ctx.Movies.AnyAsync(a => a.Id == id);
